@@ -1,6 +1,5 @@
 use super::{BaseNoise, Noise};
 
-#[derive(Clone)]
 pub struct Parameters {
     pub seed: u64,
     pub layers: usize,
@@ -9,35 +8,40 @@ pub struct Parameters {
     pub roughness: f64,
     pub strength: f64,
     pub floor: f64,
+    pub weight: f64,
 }
 
-pub struct PerlinNoise {
+pub struct RigidPerlinNoise {
     parameters: Parameters,
     noise: BaseNoise,
 }
 
-impl PerlinNoise {
+impl RigidPerlinNoise {
     pub fn new(parameters: Parameters) -> Self {
         let seed = parameters.seed;
-        PerlinNoise {
+        RigidPerlinNoise {
             parameters,
             noise: BaseNoise::new(seed),
         }
     }
 }
 
-impl Noise for PerlinNoise {
+impl Noise for RigidPerlinNoise {
     fn eval(&mut self, x: f64, y: f64) -> f64 {
         let mut value = 0.;
         let mut frequency = self.parameters.frequency;
         let mut amplitude = 1.;
+        let mut weight = 1.;
 
         for _ in 0..self.parameters.layers {
-            let noise = self.noise.perlin(x * frequency, y * frequency, 0.);
-            value += (1. + noise) * 0.5 * amplitude;
+            let mut noise = 1. - (self.noise.perlin(x * frequency, y * frequency, 0.)).abs();
+            noise *= noise;
+            noise *= weight;
+            weight = (noise * self.parameters.weight).clamp(0., 1.);
 
-            amplitude *= self.parameters.persistence;
+            value += noise * amplitude;
             frequency *= self.parameters.roughness;
+            amplitude *= self.parameters.persistence;
         }
 
         (value - self.parameters.floor) * self.parameters.strength

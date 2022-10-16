@@ -1,13 +1,21 @@
-use super::NoiseMap;
+use rand::Rng;
 
-pub fn gen(width: usize, height: usize) -> NoiseMap {
-    let mut map = NoiseMap::new(width, height);
+use super::Noise;
 
-    for x in 0..map.width() {
-        for y in 0..map.height() {
-            map[x][y] = rand::random::<u8>()
+pub struct RandomNoise {
+    rng: rand::rngs::ThreadRng,
+}
+
+impl RandomNoise {
+    pub fn new() -> Self {
+        RandomNoise {
+            rng: rand::thread_rng(),
         }
     }
+}
 
-    return map;
+impl Noise for RandomNoise {
+    fn eval(&mut self, _: f64, _: f64) -> f64 {
+        self.rng.gen_range((0.)..1.)
+    }
 }

@@ -1,8 +1,8 @@
 use std::ops;
 
 pub struct NoiseMap {
-    shape: [usize; 2],
-    pixels: Vec<u8>,
+    pub shape: [usize; 2],
+    pub pixels: Vec<u8>,
 }
 
 impl NoiseMap {
@@ -50,7 +50,7 @@ impl NoiseMap {
             &self.pixels,
             self.width().try_into().unwrap(),
             self.height().try_into().unwrap(),
-            image::ColorType::L8,
+            image::ColorType::Rgba8,
         )
         .unwrap();
     }
