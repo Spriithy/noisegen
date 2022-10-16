@@ -11,22 +11,22 @@ pub struct Parameters {
     pub weight: f64,
 }
 
-pub struct RigidPerlinNoise {
+pub struct RigidNoise {
     parameters: Parameters,
     noise: BaseNoise,
 }
 
-impl RigidPerlinNoise {
+impl RigidNoise {
     pub fn new(parameters: Parameters) -> Self {
         let seed = parameters.seed;
-        RigidPerlinNoise {
+        Self {
             parameters,
             noise: BaseNoise::new(seed),
         }
     }
 }
 
-impl Noise for RigidPerlinNoise {
+impl Noise for RigidNoise {
     fn eval(&mut self, x: f64, y: f64) -> f64 {
         let mut value = 0.;
         let mut frequency = self.parameters.frequency;

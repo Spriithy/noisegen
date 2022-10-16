@@ -8,5 +8,6 @@ edition = "2021"
 [dependencies]
 colorgrad = "0.6.2"
 image = "0.24.4"
+itertools = "0.10.5"
 rand = "0.8.5"
 rand_chacha = "0.3.1"

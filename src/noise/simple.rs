@@ -11,22 +11,22 @@ pub struct Parameters {
     pub floor: f64,
 }
 
-pub struct PerlinNoise {
+pub struct SimpleNoise {
     parameters: Parameters,
     noise: BaseNoise,
 }
 
-impl PerlinNoise {
+impl SimpleNoise {
     pub fn new(parameters: Parameters) -> Self {
         let seed = parameters.seed;
-        PerlinNoise {
+        Self {
             parameters,
             noise: BaseNoise::new(seed),
         }
     }
 }
 
-impl Noise for PerlinNoise {
+impl Noise for SimpleNoise {
     fn eval(&mut self, x: f64, y: f64) -> f64 {
         let mut value = 0.;
         let mut frequency = self.parameters.frequency;

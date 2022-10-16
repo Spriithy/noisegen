@@ -1,15 +1,12 @@
 mod base;
-mod map;
 mod noise2d;
-pub mod perlin;
-pub mod random;
 pub mod rigid;
+pub mod simple;
 
-pub use base::*;
-pub use map::*;
+use base::*;
 pub use noise2d::*;
 
-trait Noise {
+pub trait Noise {
     fn eval(&mut self, x: f64, y: f64) -> f64;
 
     fn chunk(&mut self, width: usize, height: usize) -> Vec<f64> {

@@ -8,7 +8,7 @@ pub struct BaseNoise {
 impl BaseNoise {
     pub fn new(seed: u64) -> Self {
         let permutations = permutations_from_seed(seed);
-        BaseNoise { seed, permutations }
+        Self { seed, permutations }
     }
 
     fn hash(&self, x: usize, y: usize, z: usize) -> usize {
@@ -56,11 +56,6 @@ fn fade_deriv(t: f64) -> f64 {
 }
 
 #[inline]
-fn lerp(a: f64, b: f64, x: f64) -> f64 {
-    a + x * (b - a)
-}
-
-#[inline]
 fn grad(hash: usize, x: f64, y: f64, z: f64) -> f64 {
     match hash & 0xF {
         0x0 => x + y,
@@ -85,7 +80,7 @@ fn grad(hash: usize, x: f64, y: f64, z: f64) -> f64 {
 
 fn permutations_from_seed(seed: u64) -> Vec<usize> {
     let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
-    let mut perms: Vec<usize> = (0..512).map(|x| x & 255).collect();
+    let mut perms: Vec<usize> = (0..512usize).map(|x| x & 255).collect();
     perms.shuffle(&mut rng);
     perms
 }
